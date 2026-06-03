@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WanderWise – Travel Itinerary</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- ═══════════════════════════ NAVBAR ═══════════════════════════ -->
+<nav class="navbar" id="navbar">
+  <div class="nav-brand">
+    <span class="brand-icon">✦</span>
+    <span class="brand-name">WanderWise</span>
+  </div>
+  <div class="nav-links" id="navLinks">
+    <a href="#" class="nav-link active" onclick="showPage('home')">Home</a>
+    <a href="#" class="nav-link" onclick="showPage('destinations')">Destinations</a>
+    <a href="#" class="nav-link" id="profileNavLink" style="display:none" onclick="showPage('profile')">Profile</a>
+    <a href="#" class="nav-link" id="adminNavLink" style="display:none" onclick="showPage('admin')">Admin</a>
+  </div>
+  <div class="nav-auth">
+    <div id="guestAuth">
+      <button class="btn-ghost" onclick="showPage('login')">Log In</button>
+      <button class="btn-primary" onclick="showPage('register')">Sign Up</button>
+    </div>
+    <div id="userAuth" style="display:none">
+      <span class="user-greeting" id="userGreeting"></span>
+      <button class="btn-ghost" onclick="logout()">Log Out</button>
+    </div>
+  </div>
+  <button class="hamburger" onclick="toggleMenu()">☰</button>
+</nav>
+
+<!-- ═══════════════════════════ HOME PAGE ═══════════════════════════ -->
+<div id="page-home" class="page active">
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="hero-orb orb1"></div>
+      <div class="hero-orb orb2"></div>
+      <div class="hero-grid"></div>
+    </div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Discover the Heart of Bicol</p>
+      <h1 class="hero-title">Your Journey<br/><em>Begins Here</em></h1>
+      <p class="hero-sub">Curated destinations, personal itineraries, and authentic reviews — all in one place.</p>
+      <div class="hero-actions">
+        <button class="btn-hero-primary" onclick="showPage('destinations')">Explore Destinations</button>
+        <button class="btn-hero-ghost" onclick="showPage('register')">Create Account</button>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <span>scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- Search Bar -->
+  <section class="home-search">
+    <div class="search-card">
+      <div class="search-fields">
+        <div class="search-field">
+          <label>Where to?</label>
+          <input type="text" placeholder="Destination, city, country…" id="homeSearchInput"/>
+        </div>
+        <div class="search-field">
+          <label>Category</label>
+          <select id="homeSearchCat">
+            <option value="">All Categories</option>
+            <option>Beach</option>
+            <option>Resort</option>
+            <option>City</option>
+            <option>Island</option>
+            <option>Adventure</option>
+            <option>Nature</option>
+          </select>
+        </div>
+        <button class="btn-search" onclick="doHomeSearch()">Search</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Destinations -->
+  <section class="section featured-section">
+    <div class="section-header">
+      <p class="section-eyebrow">Hand-picked for you</p>
+      <h2 class="section-title">Featured Destinations</h2>
+    </div>
+    <div class="featured-grid" id="featuredGrid"></div>
+    <div class="section-cta">
+      <button class="btn-outline" onclick="showPage('destinations')">View All Destinations →</button>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="section how-section">
+    <div class="section-header">
+      <p class="section-eyebrow">Simple & Intuitive</p>
+      <h2 class="section-title">How WanderWise Works</h2>
+    </div>
+    <div class="how-grid">
+      <div class="how-card">
+        <div class="how-num">01</div>
+        <h3>Discover</h3>
+        <p>Browse hundreds of curated destinations with rich galleries, maps, and local insights.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-num">02</div>
+        <h3>Save Favorites</h3>
+        <p>Heart the places that call to you. Your favorites are always one tap away in your profile.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-num">03</div>
+        <h3>Plan Your Trip</h3>
+        <p>Build personal itineraries, set travel dates, and track your activity checklists.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-num">04</div>
+        <h3>Share & Review</h3>
+        <p>Leave ratings and reviews to help fellow travelers find their next great adventure.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="stats-section">
+    <div class="stats-grid">
+      <div class="stat-item"><span class="stat-num">500+</span><span class="stat-label">Destinations</span></div>
+      <div class="stat-item"><span class="stat-num">12K+</span><span class="stat-label">Travelers</span></div>
+      <div class="stat-item"><span class="stat-num">30K+</span><span class="stat-label">Reviews</span></div>
+      <div class="stat-item"><span class="stat-num">98%</span><span class="stat-label">Satisfaction</span></div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════════════════════ DESTINATIONS PAGE ═══════════════════════════ -->
+<div id="page-destinations" class="page">
+  <div class="page-banner">
+    <h1>Explore Destinations</h1>
+    <p>Experience the beauty and culture of Bicol</p>
+  </div>
+  <div class="destinations-layout">
+    <!-- Sidebar Filters -->
+    <aside class="filter-sidebar">
+      <h3 class="filter-title">Filter & Sort</h3>
+      <div class="filter-group">
+        <label>Search</label>
+        <input type="text" placeholder="Destination name…" id="destSearch" oninput="filterDestinations()"/>
+      </div>
+      <div class="filter-group">
+        <label>Category</label>
+        <div class="filter-options" id="catFilters">
+          <label class="filter-check"><input type="checkbox" value="Beach" onchange="filterDestinations()"/> Beach</label>
+          <label class="filter-check"><input type="checkbox" value="Resort" onchange="filterDestinations()"/> Resort</label>
+          <label class="filter-check"><input type="checkbox" value="City" onchange="filterDestinations()"/> City</label>
+          <label class="filter-check"><input type="checkbox" value="Island" onchange="filterDestinations()"/> Island</label>
+          <label class="filter-check"><input type="checkbox" value="Adventure" onchange="filterDestinations()"/> Adventure</label>
+          <label class="filter-check"><input type="checkbox" value="Nature" onchange="filterDestinations()"/> Nature</label>
+        </div>
+      </div>
+      <div class="filter-group">
+        <label>Sort By</label>
+        <select id="sortBy" onchange="filterDestinations()">
+          <option value="name">Name A–Z</option>
+          <option value="rating">Highest Rated</option>
+          <option value="newest">Newest</option>
+        </select>
+      </div>
+      <button class="btn-reset" onclick="resetFilters()">Reset Filters</button>
+    </aside>
+    <!-- Destination Cards Grid -->
+    <main class="destinations-main">
+      <div class="results-bar">
+        <span id="resultsCount">Loading…</span>
+        <div class="view-toggle">
+          <button class="view-btn active" onclick="setView('grid',this)">⊞</button>
+          <button class="view-btn" onclick="setView('list',this)">☰</button>
+        </div>
+      </div>
+      <div class="dest-grid" id="destGrid"></div>
+    </main>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ DESTINATION DETAIL PAGE ═══════════════════════════ -->
+<div id="page-detail" class="page">
+  <div class="detail-container" id="detailContainer"></div>
+</div>
+
+<!-- ═══════════════════════════ LOGIN PAGE ═══════════════════════════ -->
+<div id="page-login" class="page">
+  <div class="auth-layout">
+    <div class="auth-panel">
+      <div class="auth-brand">✦ WanderWise</div>
+      <h2 class="auth-title">Welcome Back</h2>
+      <p class="auth-sub">Sign in to your account to continue your journey</p>
+      <form class="auth-form" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="loginEmail" placeholder="you@example.com" required/>
+          <span class="field-error" id="loginEmailErr"></span>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <div class="pass-wrap">
+            <input type="password" id="loginPass" placeholder="Your password" required/>
+            <button type="button" class="pass-toggle" onclick="togglePass('loginPass',this)">👁</button>
+          </div>
+          <span class="field-error" id="loginPassErr"></span>
+        </div>
+        <div class="form-error" id="loginFormErr"></div>
+        <button type="submit" class="btn-form-primary">Sign In</button>
+      </form>
+      <p class="auth-switch">Don't have an account? <a href="#" onclick="showPage('register')">Sign Up</a></p>
+      <!-- Demo credentials hint -->
+      <div class="demo-hint">
+        <p><strong>Demo:</strong> user@demo.com / password123</p>
+        <p><strong>Admin:</strong> admin@demo.com / admin123</p>
+      </div>
+    </div>
+    <div class="auth-visual">
+      <div class="auth-visual-inner">
+        <div class="av-orb av-orb1"></div>
+        <div class="av-orb av-orb2"></div>
+        <div class="av-quote">"The world is a book, and those who do not travel read only one page."</div>
+        <div class="av-attr">— Saint Augustine</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ REGISTER PAGE ═══════════════════════════ -->
+<div id="page-register" class="page">
+  <div class="auth-layout">
+    <div class="auth-panel">
+      <div class="auth-brand">✦ WanderWise</div>
+      <h2 class="auth-title">Create Account</h2>
+      <p class="auth-sub">Join thousands of travelers planning their next adventure</p>
+      <form class="auth-form" onsubmit="handleRegister(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label>First Name</label>
+            <input type="text" id="regFirst" placeholder="First name" required/>
+            <span class="field-error" id="regFirstErr"></span>
+          </div>
+          <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" id="regLast" placeholder="Last name" required/>
+            <span class="field-error" id="regLastErr"></span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="regEmail" placeholder="you@example.com" required/>
+          <span class="field-error" id="regEmailErr"></span>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <div class="pass-wrap">
+            <input type="password" id="regPass" placeholder="Min. 8 characters" required/>
+            <button type="button" class="pass-toggle" onclick="togglePass('regPass',this)">👁</button>
+          </div>
+          <div class="password-strength" id="passStrength"></div>
+          <span class="field-error" id="regPassErr"></span>
+        </div>
+        <div class="form-group">
+          <label>Confirm Password</label>
+          <input type="password" id="regConfirm" placeholder="Repeat password" required/>
+          <span class="field-error" id="regConfirmErr"></span>
+        </div>
+        <div class="form-error" id="regFormErr"></div>
+        <div class="form-success" id="regFormOk"></div>
+        <button type="submit" class="btn-form-primary">Create Account</button>
+      </form>
+      <p class="auth-switch">Already have an account? <a href="#" onclick="showPage('login')">Sign In</a></p>
+    </div>
+    <div class="auth-visual">
+      <div class="auth-visual-inner">
+        <div class="av-orb av-orb1"></div>
+        <div class="av-orb av-orb2"></div>
+        <div class="av-quote">"Travel makes one modest. You see what a tiny place you occupy in the world."</div>
+        <div class="av-attr">— Gustave Flaubert</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ PROFILE PAGE ═══════════════════════════ -->
+<div id="page-profile" class="page">
+  <div class="profile-layout">
+    <!-- Sidebar -->
+    <aside class="profile-sidebar">
+      <div class="profile-avatar-wrap">
+        <div class="profile-avatar" id="profileAvatar">?</div>
+        <label class="avatar-upload-btn" for="avatarInput">Change Photo</label>
+        <input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="handleAvatarUpload(event)"/>
+      </div>
+      <div class="profile-name" id="profileName">—</div>
+      <div class="profile-email" id="profileEmail">—</div>
+      <nav class="profile-nav">
+        <button class="pnav-btn active" onclick="switchProfileTab('info',this)">👤 My Info</button>
+        <button class="pnav-btn" onclick="switchProfileTab('favorites',this)">♡ Favorites</button>
+        <button class="pnav-btn" onclick="switchProfileTab('trips',this)">✈ Planned Trips</button>
+        <button class="pnav-btn" onclick="switchProfileTab('reviews',this)">★ My Reviews</button>
+      </nav>
+    </aside>
+    <!-- Content -->
+    <main class="profile-content">
+      <!-- Info Tab -->
+      <div class="profile-tab active" id="tab-info">
+        <div class="tab-header"><h2>Personal Information</h2></div>
+        <form class="profile-form" onsubmit="saveProfile(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label>First Name</label>
+              <input type="text" id="pfFirst" required/>
+            </div>
+            <div class="form-group">
+              <label>Last Name</label>
+              <input type="text" id="pfLast" required/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="pfEmail" required/>
+          </div>
+          <div class="form-success" id="profileSaveOk"></div>
+          <button type="submit" class="btn-form-primary">Save Changes</button>
+        </form>
+      </div>
+      <!-- Favorites Tab -->
+      <div class="profile-tab" id="tab-favorites">
+        <div class="tab-header"><h2>Saved Favorites</h2></div>
+        <div class="mini-grid" id="favoritesGrid"></div>
+      </div>
+      <!-- Planned Trips Tab -->
+      <div class="profile-tab" id="tab-trips">
+        <div class="tab-header"><h2>Planned Trips</h2></div>
+        <div id="tripsContainer"></div>
+      </div>
+      <!-- Reviews Tab -->
+      <div class="profile-tab" id="tab-reviews">
+        <div class="tab-header"><h2>My Reviews</h2></div>
+        <div id="myReviewsContainer"></div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ ADMIN PAGE ═══════════════════════════ -->
+<div id="page-admin" class="page">
+  <div class="admin-layout">
+    <aside class="admin-sidebar">
+      <div class="admin-logo">⚙ Admin Panel</div>
+      <nav class="admin-nav">
+        <button class="anav-btn active" onclick="switchAdminTab('dashboard',this)">📊 Dashboard</button>
+        <button class="anav-btn" onclick="switchAdminTab('destinations',this)">🗺 Destinations</button>
+        <button class="anav-btn" onclick="switchAdminTab('users',this)">👥 Users</button>
+        <button class="anav-btn" onclick="switchAdminTab('reviews',this)">★ Reviews</button>
+      </nav>
+    </aside>
+    <main class="admin-content">
+      <!-- Dashboard -->
+      <div class="admin-tab active" id="atab-dashboard">
+        <h2 class="admin-section-title">Dashboard Overview</h2>
+        <div class="admin-stats">
+          <div class="admin-stat-card"><span class="asc-num" id="asc-dest">0</span><span class="asc-label">Destinations</span></div>
+          <div class="admin-stat-card"><span class="asc-num" id="asc-users">0</span><span class="asc-label">Registered Users</span></div>
+          <div class="admin-stat-card"><span class="asc-num" id="asc-reviews">0</span><span class="asc-label">Reviews</span></div>
+          <div class="admin-stat-card"><span class="asc-num" id="asc-favs">0</span><span class="asc-label">Saved Favorites</span></div>
+        </div>
+        <div class="admin-recent">
+          <h3>Recent Activity</h3>
+          <div id="recentActivity"></div>
+        </div>
+      </div>
+      <!-- Manage Destinations -->
+      <div class="admin-tab" id="atab-destinations">
+        <div class="admin-tab-header">
+          <h2 class="admin-section-title">Manage Destinations</h2>
+          <button class="btn-primary" onclick="openDestModal()">+ Add Destination</button>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table" id="adminDestTable">
+            <thead>
+              <tr><th>Name</th><th>Location</th><th>Category</th><th>Rating</th><th>Actions</th></tr>
+            </thead>
+            <tbody id="adminDestBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <!-- Manage Users -->
+      <div class="admin-tab" id="atab-users">
+        <h2 class="admin-section-title">User Management</h2>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr><th>Name</th><th>Email</th><th>Role</th><th>Joined</th><th>Actions</th></tr>
+            </thead>
+            <tbody id="adminUsersBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <!-- Manage Reviews -->
+      <div class="admin-tab" id="atab-reviews">
+        <h2 class="admin-section-title">Review Moderation</h2>
+        <div id="adminReviewsContainer"></div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ MODAL: Destination Form ═══════════════════════════ -->
+<div class="modal-overlay" id="destModal" onclick="closeDestModal(event)">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeDestModalDirect()">✕</button>
+    <h2 id="destModalTitle">Add Destination</h2>
+    <form class="modal-form" onsubmit="saveDestination(event)">
+      <div class="form-group">
+        <label>Destination Name</label>
+        <input type="text" id="dm-name" required/>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Location</label>
+          <input type="text" id="dm-location" required/>
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <select id="dm-category" required>
+            <option value="">Select…</option>
+            <option>Beach</option><option>Resort</option><option>City</option>
+            <option>Island</option><option>Adventure</option><option>Nature</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea id="dm-desc" rows="4" required></textarea>
+      </div>
+      <div class="form-group">
+        <label>Image URL</label>
+        <input type="url" id="dm-image" placeholder="https://…"/>
+      </div>
+      <div class="form-group">
+        <label>Activities (comma-separated)</label>
+        <input type="text" id="dm-activities" placeholder="Hiking, Swimming, Photography…"/>
+      </div>
+      <input type="hidden" id="dm-editId"/>
+      <button type="submit" class="btn-form-primary" id="destModalBtn">Add Destination</button>
+    </form>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ MODAL: Write Review ═══════════════════════════ -->
+<div class="modal-overlay" id="reviewModal" onclick="closeReviewModal(event)">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeReviewModalDirect()">✕</button>
+    <h2>Write a Review</h2>
+    <form class="modal-form" onsubmit="submitReview(event)">
+      <div class="form-group">
+        <label>Rating</label>
+        <div class="star-picker" id="starPicker">
+          <span class="star" data-val="1" onclick="pickStar(1)">★</span>
+          <span class="star" data-val="2" onclick="pickStar(2)">★</span>
+          <span class="star" data-val="3" onclick="pickStar(3)">★</span>
+          <span class="star" data-val="4" onclick="pickStar(4)">★</span>
+          <span class="star" data-val="5" onclick="pickStar(5)">★</span>
+        </div>
+        <input type="hidden" id="reviewRating" value="0"/>
+      </div>
+      <div class="form-group">
+        <label>Your Review</label>
+        <textarea id="reviewComment" rows="5" placeholder="Share your experience…" required></textarea>
+      </div>
+      <input type="hidden" id="reviewDestId"/>
+      <button type="submit" class="btn-form-primary">Submit Review</button>
+    </form>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ MODAL: Plan Trip ═══════════════════════════ -->
+<div class="modal-overlay" id="tripModal" onclick="closeTripModal(event)">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeTripModalDirect()">✕</button>
+    <h2>Plan a Trip</h2>
+    <form class="modal-form" onsubmit="savePlannedTrip(event)">
+      <div class="form-group">
+        <label>Trip Name</label>
+        <input type="text" id="tm-name" placeholder="My Dream Vacation" required/>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Start Date</label>
+          <input type="date" id="tm-start" required/>
+        </div>
+        <div class="form-group">
+          <label>End Date</label>
+          <input type="date" id="tm-end" required/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Notes</label>
+        <textarea id="tm-notes" rows="3" placeholder="Things to remember…"></textarea>
+      </div>
+      <input type="hidden" id="tm-destId"/>
+      <button type="submit" class="btn-form-primary">Save Trip Plan</button>
+    </form>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ TOAST ═══════════════════════════ -->
+<div class="toast" id="toast"></div>
+
+<!-- ═══════════════════════════ FOOTER ═══════════════════════════ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="brand-icon">✦</span>
+      <span class="brand-name">WanderWise</span>
+      <p>Discover. Plan. Explore.</p>
+    </div>
+    <div class="footer-links">
+      <div class="fl-col">
+        <h4>Explore</h4>
+        <a href="#" onclick="showPage('home')">Home</a>
+        <a href="#" onclick="showPage('destinations')">Destinations</a>
+      </div>
+      <div class="fl-col">
+        <h4>Account</h4>
+        <a href="#" onclick="showPage('login')">Sign In</a>
+        <a href="#" onclick="showPage('register')">Register</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 WanderWise. All rights reserved.</p>
+  </div>
+</footer>
+<script src="app.js"></script>
+</body>
+</html>
